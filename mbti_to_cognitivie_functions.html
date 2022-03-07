@@ -77,21 +77,7 @@
                 var p2 = c2p.value / 100;
                 var p3 = c3p.value / 100;
                 var p4 = c4p.value / 100;
-                var sx, sy, nx, ny, tx, ty, fx, fy;
-                sx = sy = nx = ny = tx = ty = fx = fy = 0;
-                // sx = s4, nx = s4, tx = -s4, fx = -s4
-                // IJ -> 1i
-                // IP -> 1d
-                // EJ -> 1d
-                // EP -> 1i
                 var dx, dy, ix, iy;
-                dx = s4 * (p4 - 1/2)*2;
-                ix = - s4 * (p4 - 1/2)*2;
-                //iy = 0.5 - (s1 * s4 * p1 * p4)/2;
-                //iy += (1.5 - iy) * (1 - p2);
-                //dy = 0.5 + (s1 * s4 * p1 * p4)/2;
-                //dy += (1.5 - dy) * (1 - p3);
-                // 0.25 -> 1
                 /*
                 [iy]
                 INJ - EP -
@@ -103,29 +89,22 @@
                 (1*1) - (0*0)
                 (1*0) - (0*1)
                 */
-                iy = 1.5 - 0.75 * (-1/2 + p2)*2 * (1 + (s1/2 + 1/2) );
-                dy = 1.5 - 0.75 * (-1/2 + p3)*2 * (2 - (s1/2 + 1/2) );
-                iy = 1.5 - 0.75 * (p2 - 1/2)*2 * (1 + (s1/2 + 1/2));
-                //
-                
-                iy = 1.5 - 0.75 * (-1/2 + p2)*2 * (2 - Math.abs((s1*p1/2 + 1/2) - (s4*p4/2 + 1/2)));
-                dy = 1.5 - 0.75 * (-1/2 + p3)*2 * (1 + Math.abs((s1*p1/2 + 1/2) - (s4*p4/2 + 1/2)));
-                //iy = 1.5 - 0.75 * (-1/2 + p2)*2
-                //dy = 1.5 - 0.75 * (-1/2 + p2)*2
-                // (s1 * s4 * p1 * p4) * 
-                //dy = 1.5 - 0.75 * (((s1 * s4 * p1 * p4) - 1/4)*4/3 + s3 * p3);
+                iy = 1.5 - 0.75 * (-1/2 + p2)*2 * (2 - Math.abs((p1 - 1/2)*s1 - (p4 - 1/2)*s4));
+                dy = 1.5 - 0.75 * (-1/2 + p3)*2 * (1 + Math.abs((p1 - 1/2)*s1 - (p4 - 1/2)*s4));
+                dx = s4 * (p4 - 1/2)*2 * Math.abs(1.5 - dy)/1.5 * Math.abs(dy - iy)/1.5;
+                ix = - s4 * (p4 - 1/2)*2 * Math.abs(1.5 - iy)/1.5 * Math.abs(dy - iy)/1.5;
                 outstr = "";
                 ctx.clearRect(0, 0, 400, 400);
                 if (iy > dy) {
                     outstr += add_d(s3, dy, dx);
-                    outstr += add_i(s2, iy, ix);
-                    outstr += add_ri(s2, iy, ix);
-                    outstr += add_rd(s3, dy, dx);
+                    outstr += add_i(s2, iy, ix * 0.75);
+                    outstr += add_ri(s2, iy, ix * 0.5);
+                    outstr += add_rd(s3, dy, dx * 0.25);
                 } else {
                     outstr += add_i(s2, iy, ix);
-                    outstr += add_d(s3, dy, dx);
-                    outstr += add_rd(s3, dy, dx);
-                    outstr += add_ri(s2, iy, ix);
+                    outstr += add_d(s3, dy, dx * 0.75);
+                    outstr += add_rd(s3, dy, dx * 0.5);
+                    outstr += add_ri(s2, iy, ix * 0.25);
                 }
                 output.innerHTML = outstr;
                 save_values();
