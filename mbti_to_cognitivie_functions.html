@@ -42,7 +42,7 @@
                 if (s3 == 1) outstr += "F ";
                 else outstr += "T ";
                 if (dx > 0) outstr += "e";
-                else if (ix == 0) outstr += "x";
+                else if (dx == 0) outstr += "x";
                 else outstr += "i";
                 ctx.fillText(outstr, 200-7 + dx * 192, 10 + dy * 100);
                 return "+" + dy + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
@@ -62,7 +62,7 @@
                 if (s3 == 1) outstr += "T ";
                 else outstr += "F ";
                 if (dx > 0) outstr += "i";
-                else if (ix == 0) outstr += "x";
+                else if (dx == 0) outstr += "x";
                 else outstr += "e";
                 ctx.fillText(outstr, 200-7 - dx * 192, 10 + (3 - dy) * 100);
                 return "+" + (3 - dy) + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
