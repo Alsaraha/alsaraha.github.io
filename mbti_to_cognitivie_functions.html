@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>from MBTI to cognitive functions</title>
+        <title>from MBTI to cognitive functions (alpha)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <h1>MBTI to congnitive functions converter</h1>
+        <h1>MBTI to congnitive functions converter (alpha)</h1>
         <h2>Step 1: Enter your MBTI type and percentages</h2>
-        <label>character 1: </label><select id="c1" onchange="calculate_result()"><option value="I">I</option><option value="E">E</option></select><input id="c1p" type="range" min="51" max="100" value="100" oninput="this.nextElementSibling.value = this.value" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
-        <label>character 2: </label><select id="c2" onchange="calculate_result()"><option value="S">S</option><option value="N">N</option></select><input id="c2p" type="range" min="51" max="100" value="100" oninput="this.nextElementSibling.value = this.value" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
-        <label>character 3: </label><select id="c3" onchange="calculate_result()"><option value="F">F</option><option value="T">T</option></select><input id="c3p" type="range" min="51" max="100" value="100" oninput="this.nextElementSibling.value = this.value" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
-        <label>character 4: </label><select id="c4" onchange="calculate_result()"><option value="J">J</option><option value="P">P</option></select><input id="c4p" type="range" min="51" max="100" value="100" oninput="this.nextElementSibling.value = this.value" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
+        <label>character 1: </label><select id="c1" onchange="calculate_result()"><option value="I">I</option><option value="E">E</option></select><input id="c1p" type="range" min="50" max="100" value="100" oninput="this.nextElementSibling.value = this.value; calculate_result()" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
+        <label>character 2: </label><select id="c2" onchange="calculate_result()"><option value="S">S</option><option value="N">N</option></select><input id="c2p" type="range" min="50" max="100" value="100" oninput="this.nextElementSibling.value = this.value; calculate_result()" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
+        <label>character 3: </label><select id="c3" onchange="calculate_result()"><option value="F">F</option><option value="T">T</option></select><input id="c3p" type="range" min="50" max="100" value="100" oninput="this.nextElementSibling.value = this.value; calculate_result()" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
+        <label>character 4: </label><select id="c4" onchange="calculate_result()"><option value="J">J</option><option value="P">P</option></select><input id="c4p" type="range" min="50" max="100" value="100" oninput="this.nextElementSibling.value = this.value; calculate_result()" onchange="calculate_result()"><output>100</output><label>%</label></label><br>
         <h2>Step 2: Read the results</h2>
         <canvas id="drawhere" width="400px" height="400px"></canvas>
         <textarea disabled="disabled" id="output" style="width: 400px; height: 400px;"></textarea>
         <script>
+            var initialized = false;
             var cnvs = document.getElementById("drawhere");
             var ctx = cnvs.getContext("2d");
             var c1 = document.getElementById("c1");
@@ -31,7 +33,7 @@
                 else outstr += "N ";
                 if (ix > 0) outstr += "e";
                 else outstr += "i";
-                ctx.fillText(outstr, 10 + 200-50 + ix * 150, 10 + iy * 100, 100, 100);
+                ctx.fillText(outstr, 200-7 + ix * 192, 10 + iy * 100);
                 return "+" + iy + outstr + "(" + (Math.abs(ix)*100) + "%)" + "\n";
             }
             function add_d(s3, dy, dx) {
@@ -40,7 +42,7 @@
                 else outstr += "T ";
                 if (dx > 0) outstr += "e";
                 else outstr += "i";
-                ctx.fillText(outstr, 10 + 200-50 + dx * 150, 10 + dy * 100, 100, 100);
+                ctx.fillText(outstr, 200-7 + dx * 192, 10 + dy * 100);
                 return "+" + dy + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
             }
             function add_ri(s2, iy, ix) {
@@ -49,7 +51,7 @@
                 else outstr += "S ";
                 if (ix > 0) outstr += "i";
                 else outstr += "e";
-                ctx.fillText(outstr, 10 + 200-50 - ix * 150, 10 + (3 - iy) * 100, 100, 100);
+                ctx.fillText(outstr, 200-7 - ix * 192, 10 + (3 - iy) * 100);
                 return "+" + (3 - iy) + outstr + "(" + (Math.abs(ix)*100) + "%)" + "\n";
             }
             function add_rd(s3, dy, dx) {
@@ -58,10 +60,11 @@
                 else outstr += "F ";
                 if (dx > 0) outstr += "i";
                 else outstr += "e";
-                ctx.fillText(outstr, 10 + 200-50 - dx * 150, 10 + (3 - dy) * 100, 100, 100);
+                ctx.fillText(outstr, 200-7 - dx * 192, 10 + (3 - dy) * 100);
                 return "+" + (3 - dy) + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
             }
             function calculate_result() {
+                if (!initialized) return;
                 var s1 = c1.value == "I"; s1-=0.5; s1*=2;
                 var s2 = c2.value == "S"; s2-=0.5; s2*=2;
                 var s3 = c3.value == "F"; s3-=0.5; s3*=2;
@@ -78,12 +81,35 @@
                 // EJ -> 1d
                 // EP -> 1i
                 var dx, dy, ix, iy;
-                dx = s4 * p4;
-                ix = - s4 * p4;
-                iy = 0.5 - (s1 * s4 * p1 * p4)/2;
-                iy += (1.5 - iy) * (1 - p2);
-                dy = 0.5 + (s1 * s4 * p1 * p4)/2;
-                dy += (1.5 - dy) * (1 - p3);
+                dx = s4 * (p4 - 1/2)*2;
+                ix = - s4 * (p4 - 1/2)*2;
+                //iy = 0.5 - (s1 * s4 * p1 * p4)/2;
+                //iy += (1.5 - iy) * (1 - p2);
+                //dy = 0.5 + (s1 * s4 * p1 * p4)/2;
+                //dy += (1.5 - dy) * (1 - p3);
+                // 0.25 -> 1
+                /*
+                [iy]
+                INJ - EP -
+                INP - EJ
+                ISP - ESJ
+                ISJ - ESP
+                (IJ) - (IP)
+                (s/2+1/2)
+                (1*1) - (0*0)
+                (1*0) - (0*1)
+                */
+                iy = 1.5 - 0.75 * (-1/2 + p2)*2 * (1 + (s1/2 + 1/2) );
+                dy = 1.5 - 0.75 * (-1/2 + p3)*2 * (2 - (s1/2 + 1/2) );
+                iy = 1.5 - 0.75 * (p2 - 1/2)*2 * (1 + (s1/2 + 1/2));
+                //
+                
+                iy = 1.5 - 0.75 * (-1/2 + p2)*2 * (2 - Math.abs((s1*p1/2 + 1/2) - (s4*p4/2 + 1/2)));
+                dy = 1.5 - 0.75 * (-1/2 + p3)*2 * (1 + Math.abs((s1*p1/2 + 1/2) - (s4*p4/2 + 1/2)));
+                //iy = 1.5 - 0.75 * (-1/2 + p2)*2
+                //dy = 1.5 - 0.75 * (-1/2 + p2)*2
+                // (s1 * s4 * p1 * p4) * 
+                //dy = 1.5 - 0.75 * (((s1 * s4 * p1 * p4) - 1/4)*4/3 + s3 * p3);
                 outstr = "";
                 ctx.clearRect(0, 0, 400, 400);
                 if (iy > dy) {
@@ -98,8 +124,30 @@
                     outstr += add_ri(s2, iy, ix);
                 }
                 output.innerHTML = outstr;
+                save_values();
             }
-            window.addEventListener("load", calculate_result);
+            function save_values() {
+                ["", "p"].forEach(j => {
+                for (var i = 1; i <= 4; i++) {
+                        localStorage.setItem("c" + i + j, window["c" + i + j].value);
+                    }
+                })
+            }
+            function restore_values() {
+                ["", "p"].forEach(j => {
+                for (var i = 1; i <= 4; i++) {
+                        if (localStorage.getItem("c" + i + j) != null) {
+                            window["c" + i + j].value = localStorage.getItem("c" + i + j);
+                            window["c" + i + j].dispatchEvent(new Event("input"));
+                        }
+                    }
+                })
+            }
+            window.addEventListener("load", function() {
+                restore_values();
+                initialized = true;
+                calculate_result();
+            });
         </script>
     </body>
 </html>
