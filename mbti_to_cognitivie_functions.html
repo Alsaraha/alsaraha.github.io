@@ -34,6 +34,7 @@
                 if (ix > 0) outstr += "e";
                 else if (ix == 0) outstr += "x";
                 else outstr += "i";
+                drawEllipse(200, -3 + iy * 100, ix * 192 + ix/Math.abs(ix)*15, 20);
                 ctx.fillText(outstr, 200-7 + ix * 192, 10 + iy * 100);
                 return "+" + iy + outstr + "(" + (Math.abs(ix)*100) + "%)" + "\n";
             }
@@ -44,6 +45,7 @@
                 if (dx > 0) outstr += "e";
                 else if (dx == 0) outstr += "x";
                 else outstr += "i";
+                drawEllipse(200, -3 + dy * 100, dx * 192 + dx/Math.abs(dx)*15, 20);
                 ctx.fillText(outstr, 200-7 + dx * 192, 10 + dy * 100);
                 return "+" + dy + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
             }
@@ -54,6 +56,7 @@
                 if (ix > 0) outstr += "i";
                 else if (ix == 0) outstr += "x";
                 else outstr += "e";
+                drawEllipse(200, -3 + (3 - iy) * 100, -ix * 192 + -ix/Math.abs(ix)*15, 20);
                 ctx.fillText(outstr, 200-7 - ix * 192, 10 + (3 - iy) * 100);
                 return "+" + (3 - iy) + outstr + "(" + (Math.abs(ix)*100) + "%)" + "\n";
             }
@@ -64,6 +67,7 @@
                 if (dx > 0) outstr += "i";
                 else if (dx == 0) outstr += "x";
                 else outstr += "e";
+                drawEllipse(200, -3 + (3 - dy) * 100, -dx * 192 + -dx/Math.abs(dx)*15, 20);
                 ctx.fillText(outstr, 200-7 - dx * 192, 10 + (3 - dy) * 100);
                 return "+" + (3 - dy) + outstr + "(" + (Math.abs(dx)*100) + "%)" + "\n";
             }
@@ -139,6 +143,26 @@
                 output.innerHTML = outstr;
                 save_values();
             }
+
+            function drawEllipse(x, y, w, h) {
+                var kappa = .5522848,
+                    ox = (w / 2) * kappa, // control point offset horizontal
+                    oy = (h / 2) * kappa, // control point offset vertical
+                    xe = x + w,           // x-end
+                    ye = y + h,           // y-end
+                    xm = x + w / 2,       // x-middle
+                    ym = y + h / 2;       // y-middle
+
+                ctx.beginPath();
+                ctx.moveTo(x, ym);
+                ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+                ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+                ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+                ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+                //ctx.closePath(); // not used correctly, see comments (use to close off open path)
+                ctx.stroke();
+            }
+
             function save_values() {
                 ["", "p"].forEach(j => {
                 for (var i = 1; i <= 4; i++) {
