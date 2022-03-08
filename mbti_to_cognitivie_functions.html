@@ -95,16 +95,46 @@
                 ix = - s4 * (p4 - 1/2)*2 * Math.abs(1.5 - iy)/1.5 * Math.abs(dy - iy)/1.5;
                 outstr = "";
                 ctx.clearRect(0, 0, 400, 400);
+                ctx.fillStyle = "#EEE";
+                for (var i = 50; i <= 400-50; i+=50) {
+                    ctx.fillRect(i-0.5, 0, 1, 400);
+                    ctx.fillRect(0, i-0.5, 400, 1);
+                }
+                ctx.fillStyle = "black";
                 if (iy > dy) {
                     outstr += add_d(s3, dy, dx);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_d(-s3, dy, -dx * 0.128);
+                    ctx.fillStyle = "black";
                     outstr += add_i(s2, iy, ix * 0.75);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_i(-s2, iy, -ix * 0.128 * 0.75);
+                    ctx.fillStyle = "black";
                     outstr += add_ri(s2, iy, ix * 0.5);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_ri(-s2, iy, -ix * 0.128 * 0.5);
+                    ctx.fillStyle = "black";
                     outstr += add_rd(s3, dy, dx * 0.25);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_rd(-s3, dy, -dx * 0.128 * 0.25);
+                    ctx.fillStyle = "black";
                 } else {
                     outstr += add_i(s2, iy, ix);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_i(-s2, iy, -ix * 0.128);
+                    ctx.fillStyle = "black";
                     outstr += add_d(s3, dy, dx * 0.75);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_d(-s3, dy, -dx * 0.128 * 0.75);
+                    ctx.fillStyle = "black";
                     outstr += add_rd(s3, dy, dx * 0.5);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_rd(-s3, dy, -dx * 0.128 * 0.5);
+                    ctx.fillStyle = "black";
                     outstr += add_ri(s2, iy, ix * 0.25);
+                    ctx.fillStyle = "#CCC";
+                    outstr += add_ri(-s2, iy, -ix * 0.128 * 0.25);
+                    ctx.fillStyle = "black";
                 }
                 output.innerHTML = outstr;
                 save_values();
